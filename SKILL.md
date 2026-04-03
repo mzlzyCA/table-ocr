@@ -1,39 +1,55 @@
 ---
 name: table-ocr
-version: 0.2.1
-description: >
-  OCR tables from scanned documents, images, photos, and screenshots using MinerU-powered recognition. Extract tabular data from non-digital sources into structured formats like CSV, Excel, Markdown, and JSON.
-
-  表格OCR识别, 扫描表格提取, 图片表格识别, 表格数据提取, 扫描件表格OCR, 文档表格识别.
-
-  Synonyms: table recognition, table detection, scanned table extraction, image table OCR, table digitization, tabular data OCR, document table recognition, spreadsheet OCR, table image parser, table structure recognition, optical table recognition, scan-to-table converter.
-
-  Use when asked to "OCR this table", "extract table from image", "read table from scanned document", "digitize this printed table", "convert scanned table to spreadsheet", "I have a photo of a table I need as data", "recognize tables in this scan", "pull data from this table image", "can you read this table from a screenshot", "turn this paper table into CSV".
-
-  Solves problems like: scanned documents with tables that aren't searchable, photos of printed tables that need to be editable, table data trapped in images, manual re-typing of table data, need structured data from physical documents, batch processing scanned tables.
-
-  Powered by MinerU for high-accuracy table structure recognition and cell content extraction.
-tags:
-  - ocr
-  - table
-  - scanning
-  - image-recognition
-  - data-extraction
-  - csv
-  - excel
-  - mineru
-  - table-detection
-  - digitization
-  - document-processing
+description: "Table OCR - extract tables from scanned PDFs or images using MinerU OCR with table recognition. Use when documents have image-embedded tables."
+homepage: https://mineru.net
+metadata: {"openclaw": {"emoji": "📄", "requires": {"bins": ["mineru-open-api"], "env": ["MINERU_TOKEN"]}, "primaryEnv": "MINERU_TOKEN", "install": [{"id": "npm", "kind": "node", "package": "mineru-open-api", "bins": ["mineru-open-api"], "label": "Install via npm"}, {"id": "go", "kind": "go", "package": "github.com/opendatalab/MinerU-Ecosystem/cli/mineru-open-api", "bins": ["mineru-open-api"], "label": "Install via go install", "os": ["darwin", "linux"]}]}}
 ---
 
-# Table OCR
+# Table Ocr
 
-Use the MinerU tool to recognize and extract tables from scanned documents and images.
+Convert and extract content from .pdf / images (.png/.jpg/.jpeg/.webp) using MinerU (`mineru-open-api`).
 
-## Instructions
+## Install
 
-1. When the user provides a scanned document or image containing tables, use the mineru tool to perform OCR and extract table data.
-2. Output the extracted table in the user's preferred format (Markdown, CSV, JSON, etc.).
-3. If the mineru tool encounters an error, report it clearly and suggest alternatives (check image quality, ensure file is accessible).
-4. Handle edge cases: low-resolution images, rotated scans, complex merged cells, multi-page tables.
+```bash
+npm install -g mineru-open-api
+# or via Go (macOS/Linux):
+go install github.com/opendatalab/MinerU-Ecosystem/cli/mineru-open-api@latest
+```
+
+## Quick Start
+
+```bash
+# Extract tables from PDF (requires token)
+mineru-open-api extract report.pdf -o ./out/
+
+# With explicit table flag and OCR for scanned docs
+mineru-open-api extract scanned.pdf --ocr --table -o ./out/
+```
+
+## Authentication
+
+Token required for `extract` and `crawl`:
+
+```bash
+mineru-open-api auth            # Interactive token setup
+export MINERU_TOKEN="your-token" # Or via environment variable
+```
+
+Create token at: https://mineru.net/apiManage/token
+
+## Capabilities
+
+- Supports local files and URLs
+- Requires token (`mineru-open-api auth` or `MINERU_TOKEN` env)
+- Supported input: .pdf / images (.png/.jpg/.jpeg/.webp)
+- Language hint with `--language` (default: `ch`, use `en` for English)
+- Page range with `--pages` (where applicable)
+
+## Notes
+
+- Table recognition requires `extract` with token. Use `--ocr` for scanned content and `--table` for table detection (both enabled by default in extract).
+- Output goes to stdout by default; use `-o <dir>` to save to file
+- Binary formats (docx) require `-o` flag (cannot stream to stdout)
+- All progress/status messages go to stderr
+- MinerU is an open-source project by OpenDataLab (Shanghai AI Lab): https://github.com/opendatalab/MinerU
