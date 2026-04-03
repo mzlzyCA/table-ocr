@@ -1,6 +1,6 @@
 ---
 name: table-ocr
-version: 0.2.0
+version: 0.2.1
 description: >
   OCR tables from scanned documents, images, photos, and screenshots using MinerU-powered recognition. Extract tabular data from non-digital sources into structured formats like CSV, Excel, Markdown, and JSON.
 
